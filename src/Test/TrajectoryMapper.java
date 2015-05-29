@@ -2,6 +2,7 @@ package Test;
 
 import java.util.ArrayList;
 
+
 //JavaFx
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
@@ -19,6 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
@@ -43,6 +45,8 @@ public class TrajectoryMapper extends Application {
 	private final Rectangle rectPath = new Rectangle(0, 0, 40, 40);
 	private Rectangle r;
 	private TextField name;
+	private Button run;
+	private TextField cordinates;
 
 	private ArrayList<Point> points = new ArrayList<Point>();
 	private String pathName = "TestName";
@@ -70,19 +74,19 @@ public class TrajectoryMapper extends Application {
 		// Colors rectangle
 		rectPath.setFill(Color.ORANGE);
 
-		Path path = new Path();
-		path.getElements().add(new MoveTo(20, 20));
-		path.getElements().add(new CubicCurveTo(380, 0, 380, 120, 200, 120));
-		path.getElements().add(new CubicCurveTo(0, 120, 0, 240, 380, 240));
-		PathTransition pathTransition = new PathTransition();
-		pathTransition.setDuration(Duration.millis(4000));
-		pathTransition.setPath(path);
-		pathTransition.setNode(rectPath);
-		pathTransition
-				.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-		pathTransition.setCycleCount(Timeline.INDEFINITE);
-		pathTransition.setAutoReverse(true);
-		pathTransition.play();
+//		Path path = new Path();
+//		path.getElements().add(new MoveTo(20, 20));
+//		path.getElements().add(new CubicCurveTo(380, 0, 380, 120, 200, 120));
+//		path.getElements().add(new CubicCurveTo(0, 120, 0, 240, 380, 240));
+//		PathTransition pathTransition = new PathTransition();
+//		pathTransition.setDuration(Duration.millis(4000));
+//		pathTransition.setPath(path);
+//		pathTransition.setNode(rectPath);
+//		pathTransition
+//				.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+//		pathTransition.setCycleCount(Timeline.INDEFINITE);
+//		pathTransition.setAutoReverse(true);
+//		pathTransition.play();
 
 		// StackPane root = new StackPane();
 		AnchorPane root = new AnchorPane();
@@ -161,6 +165,17 @@ public class TrajectoryMapper extends Application {
 				}
 			}
 		});
+		
+		cordinates = new TextField();
+		cordinates.setLayoutX(750);
+		cordinates.setLayoutY(250);
+		
+		r.setOnMouseMoved(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent click) {
+				cordinates.setText("(" + click.getSceneX()/25d + "," + click.getSceneY()/25d + ")");
+			}
+		});
 
 		name = new TextField();
 		name.setLayoutX(750);
@@ -176,6 +191,51 @@ public class TrajectoryMapper extends Application {
 				nameAdded = true;
 			}
 		});
+		
+		run = new Button("Run");
+		run.setLayoutX(750);
+		run.setLayoutY(200);
+		
+		run.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				ArrayList<Point> drawPoints = points;
+				
+				for(int i = 0; i < drawPoints.size(); i++){
+					drawPoints.get(i).setX(drawPoints.get(i).getX() * 25d);
+					drawPoints.get(i).setY(drawPoints.get(i).getY() * 25d);
+				}
+				
+				Path path = new Path();
+				
+				path.getElements().add(new MoveTo(drawPoints.get(0).getX(), drawPoints.remove(0).getY()));
+				while(drawPoints.size() > 0){
+					path.getElements().add(new LineTo(drawPoints.get(0).getX(), drawPoints.remove(0).getY()));
+				}
+				/*
+				path.getElements().add(new MoveTo(drawPoints.get(0).getX(), drawPoints.remove(0).getY()));
+				while(drawPoints.size() >= 3){
+					path.getElements().add(new CubicCurveTo(drawPoints.get(0).getX(), drawPoints.remove(0).getY(), 
+							drawPoints.get(0).getX(), drawPoints.remove(0).getY(),
+							drawPoints.get(0).getX(), drawPoints.remove(0).getY()));
+				}
+				while(drawPoints.size() > 0){
+					path.getElements().add(new LineTo(drawPoints.get(0).getX(), drawPoints.remove(0).getY()));
+				}
+				*/
+				PathTransition pathTransition = new PathTransition();
+				pathTransition.setDuration(Duration.millis(4000));
+				pathTransition.setPath(path);
+				pathTransition.setNode(rectPath);
+				pathTransition
+						.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+				pathTransition.setCycleCount(Timeline.INDEFINITE);
+				pathTransition.setAutoReverse(true);
+				pathTransition.play();
+			}
+		});
+		
+		root.getChildren().add(run);
+		root.getChildren().add(cordinates);
 
 		root.getChildren().add(name);
 		root.getChildren().add(submit);
@@ -198,6 +258,8 @@ public class TrajectoryMapper extends Application {
 		name.setEditable(true);
 		nameAdded = false;
 		root.getChildren().add(submit);
+		root.getChildren().add(run);
+		root.getChildren().add(cordinates);
 
 	}
 
