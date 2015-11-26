@@ -10,12 +10,12 @@ public class TrajectoryToPoints {
 	private static ArrayList<String> files = new ArrayList<String>();
 	
 	public static void main(String[] args){
-		listFilesForFolder(new File("/Users/Blevenson/Desktop/Robotics/Trajectroy/"));
+		listFilesForFolder(new File("Trajectroy/"));
 		
 		for(String fileName : files){
 		ArrayList<Double> list = new ArrayList<Double>();
 		try {
-			Scanner scan = new Scanner(new FileReader(new File("/Users/Blevenson/Desktop/Robotics/Trajectroy/" + fileName)));
+			Scanner scan = new Scanner(new FileReader(new File("Trajectroy/" + fileName)));
 			
 			String pathName = scan.nextLine();
 			System.out.println(pathName);  //Removes Trajectory name
@@ -33,7 +33,7 @@ public class TrajectoryToPoints {
 				System.out.println(i);
 			}
 			
-			FileWriter fw = new FileWriter(new File("/Users/Blevenson/Desktop/Code/Octave/Files/" + pathName + ".txt"));
+			FileWriter fw = new FileWriter(new File("Trajectories/" + pathName + ".txt"));
 			
 			for(int i = 0; i < list.size()-1;i += 2){
 				fw.write(list.get(i) + " " + list.get(i+1) + "\n");

@@ -44,10 +44,8 @@ public class GraphPath extends Application {
 		//Get Directory
 		DirectoryChooser directoryChooser = new DirectoryChooser();
 		directoryChooser.setTitle("Open Trajectory Folder");
-		directoryChooser.setInitialDirectory(new File("/Users/Blevenson/Desktop/Robotics/ProcessedTrajectories/"));
+		directoryChooser.setInitialDirectory(new File("ProcessedTrajectories/"));
 		
-//		ObservableList<String> options = FXCollections
-//				.observableArrayList(getFiles("/Users/Blevenson/Desktop/Robotics/ProcessedTrajectories/"));
 		ObservableList<String> options = FXCollections.observableArrayList(getFiles(directoryChooser.showDialog(stage)));
 		final ComboBox<String> comboBox = new ComboBox<String>(options);
 		comboBox.setValue("Center Lane Path Far");
@@ -66,7 +64,7 @@ public class GraphPath extends Application {
 			System.out.println("Looping");
 		}
 		File file = new File(getFilePath(new File(
-				"/Users/Blevenson/Desktop/Robotics/ProcessedTrajectories/"),
+				"ProcessedTrajectories/"),
 				comboBox.getValue()));
 		// FileChooser fileChooser = new FileChooser();
 		// fileChooser.setTitle("Open Trajectory File");
@@ -113,7 +111,7 @@ public class GraphPath extends Application {
 
 	protected void updateGraph(String newValue) {
 		File file = new File(getFilePath(new File(
-				"/Users/Blevenson/Desktop/Robotics/ProcessedTrajectories/"),
+				"ProcessedTrajectories/"),
 				newValue));
 
 		XYChart.Series leftSeries = new XYChart.Series();

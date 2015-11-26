@@ -43,7 +43,7 @@ public class Runner {
   }
   
   public static void main(String[] args) {
-    String directory = "/Users/Blevenson/Desktop/Robotics/Trajectroy/";
+    String directory = "Trajectroy/";
     if (args.length >= 1) {
       directory = args[0];
     }
